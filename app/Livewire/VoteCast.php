@@ -2,33 +2,58 @@
 
 namespace App\Livewire;
 
-use App\Models\Vote;
 use App\Models\Ballot;
-use Livewire\Component;
 use App\Models\Candidate;
+use App\Models\Vote;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class VoteCast extends Component
 {
     public $electionId;
     public $candidateId;
-    public $voterId; // This would usually come from the authenticated user.
+    public $candidates;
+
+    public function mount()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // Logic for rendering the election candidates
+        $this->candidates = Candidate::where('election_id', $this->electionId)->get();
+    }
 
     public function castVote()
     {
-        // Create a ballot entry
+        // Ensure the user is authenticated
+        if (!Auth::check()) {
+            session()->flash('error', 'You must be logged in to vote.');
+            return redirect()->route('login');
+        }
+
+        // Proceed to cast the vote for authenticated user
+        $user = Auth::user();
+
+        // Check if the user has already voted in this election
+        if (Ballot::where('voter_id', $user->id)->where('election_id', $this->electionId)->exists()) {
+            session()->flash('error', 'You have already voted in this election.');
+            return;
+        }
+
+        // Create the ballot and cast the vote
         $ballot = Ballot::create([
-            'voter_id' => $this->voterId,  // This would be the logged-in user
+            'voter_id' => $user->id,
             'election_id' => $this->electionId,
             'submitted_at' => now(),
         ]);
 
-        // Cast vote
         Vote::create([
             'ballot_id' => $ballot->id,
             'candidate_id' => $this->candidateId,
         ]);
 
-        session()->flash('message', 'Vote successfully cast.');
+        session()->flash('message', 'Your vote has been cast successfully.');
     }
 
     public function render()

@@ -3,6 +3,8 @@
 
     @if (session()->has('message'))
         <div class="bg-green-500 text-white p-4 mb-4">{{ session('message') }}</div>
+    @elseif (session()->has('error'))
+        <div class="bg-red-500 text-white p-4 mb-4">{{ session('error') }}</div>
     @endif
 
     <form wire:submit.prevent="castVote">
