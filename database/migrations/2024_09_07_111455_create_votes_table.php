@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('voters', function (Blueprint $table) {
+        Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->string('student_no')->unique();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('photo')->nullable();
+            $table->unsignedBigInteger('ballot_id');
+            $table->unsignedBigInteger('candidate_id');
             $table->timestamps();
+
+            $table->foreign('ballot_id')->references('id')->on('ballots')->onDelete('cascade');
+            $table->foreign('candidate_id')->references('id')->on('candidates')->onDelete('cascade');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('voters');
+        Schema::dropIfExists('votes');
     }
 };
