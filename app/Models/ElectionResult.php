@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ElectionResult extends Model
 {
-    protected $fillable = ['election_id', 'candidate_id', 'votes_count', 'result_declared_at'];
+    use HasFactory;
+
+    protected $fillable = ['election_id', 'candidate_id', 'votes_count'];
 
     public function election()
     {

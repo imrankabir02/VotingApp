@@ -5,7 +5,7 @@ use App\Livewire\Admin\ElectionManage;
 use App\Livewire\BallotList;
 use App\Livewire\CandidateList;
 use App\Livewire\ElectionList;
-use App\Livewire\ElectionResult;
+use App\Livewire\ElectionResults;
 use App\Livewire\VoteCast;
 use Illuminate\Support\Facades\Route;
 
@@ -28,10 +28,16 @@ Route::get('/elections', ElectionList::class);
 Route::get('/elections/{electionId}/candidates', CandidateList::class);
 Route::get('/elections/{electionId}/ballots', BallotList::class);
 Route::get('/elections/{electionId}/vote', VoteCast::class);
-Route::get('/elections/{electionId}/results', ElectionResult::class);
+// Route::get('/elections/{electionId}/results', ElectionResult::class);
+// Define a route for election results
+Route::get('/elections/{electionId}/results', ElectionResults::class)
+    ->name('election.results');
 
 Route::middleware('auth')->group(function () {
     Route::get('/elections/{electionId}/vote', VoteCast::class)->name('elections.vote');
 });
+
+
+
 
 require __DIR__ . '/auth.php';

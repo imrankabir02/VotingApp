@@ -9,9 +9,8 @@ use Livewire\Attributes\Layout;
 class ElectionManage extends Component
 {
 
-    public $elections, $title, $start_date, $end_date, $is_published;
+    public $elections, $title, $start_date, $end_date, $is_published, $electionId;
     public $updateMode = false;
-    public $electionId;
 
     #[Layout('components.layouts.admin')]
     public function render()
@@ -84,6 +83,20 @@ class ElectionManage extends Component
         Election::find($id)->delete();
         session()->flash('message', 'Election Deleted Successfully.');
     }
+
+    public function publishResults($id)
+    {
+        $election = Election::find($id);
+        if ($election && now()->greaterThan($election->end_date)) {
+            $election->results_published = true;
+            $election->save();
+            session()->flash('message', 'Results published successfully.');
+        } else {
+            session()->flash('error', 'Results cannot be published before the election ends.');
+        }
+    }
+
+
 }
 
 
