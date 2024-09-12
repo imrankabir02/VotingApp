@@ -9,9 +9,6 @@ new #[Layout('layouts.guest')] class extends Component
 {
     public LoginForm $form;
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function login(): void
     {
         $this->validate();
@@ -20,7 +17,24 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('admin.dashboard', absolute: false), navigate: true);
+        // Redirect based on user role
+        $this->redirectBasedOnRole();
+    }
+
+    /**
+     * Redirect the user to the appropriate dashboard based on role.
+     */
+    protected function redirectBasedOnRole()
+    {
+        $role = auth()->user()->role;
+
+        if ($role === 'admin') {
+            $this->redirect(route('admin.dashboard'), navigate: true);
+        } elseif ($role === 'voter') {
+            $this->redirect(route('voter.voterdashboard'), navigate: true);
+        } else {
+            $this->redirect('/', navigate: true);
+        }
     }
 }; ?>
 

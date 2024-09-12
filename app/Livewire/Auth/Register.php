@@ -38,7 +38,8 @@ class Register extends Component
         // Role-based redirect
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
-        } else {
+        }
+        if($user->role === 'voter') {
             return redirect()->route('voter.dashboard');
         }
     }

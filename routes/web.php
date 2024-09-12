@@ -42,11 +42,8 @@ Route::middleware(['role:voter'])->prefix('voter')->as('voter.')->group(function
 // Route::get('/elections/{electionId}/results', ElectionResult::class);
 // Define a route for election results
 
-Route::middleware('auth')->group(function () {
-    Route::get('/elections/{electionId}/vote', VoteCast::class)->name('elections.vote');
-});
-
-
-
+// Route::middleware('auth')->group(function () {
+//     Route::get('/elections/{electionId}/vote', VoteCast::class)->name('elections.vote');
+// });
 
 require __DIR__ . '/auth.php';
