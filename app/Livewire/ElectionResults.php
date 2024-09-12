@@ -11,20 +11,23 @@ class ElectionResults extends Component
     public $electionId;
     public $results;
     public $isPublished;
+    public $winner;
 
     public function mount($electionId)
     {
-        // Find the election by its ID
         $election = Election::find($electionId);
 
-        // Check if results have been published
         if ($election) {
             $this->isPublished = $election->results_published;
 
-            // Only load results if the election results are published
             if ($this->isPublished) {
-                // Fetch results from the ElectionResult model
-                $this->results = ElectionResult::where('election_id', $electionId)->get();
+                // Fetch results for all candidates
+                $this->results = ElectionResult::where('election_id', $electionId)
+                    ->orderBy('votes_count', 'desc')
+                    ->get();
+
+                // Determine the winner (candidate with the highest votes)
+                $this->winner = $this->results->first(); // Candidate with the most votes
             } else {
                 $this->results = null;
             }
@@ -36,6 +39,7 @@ class ElectionResults extends Component
         return view('livewire.election-result', [
             'results' => $this->results,
             'isPublished' => $this->isPublished,
+            'winner' => $this->winner,
         ]);
     }
 }

@@ -13,18 +13,20 @@
         </thead>
         <tbody>
             @foreach ($elections as $election)
-                <tr>
-                    <td class="px-4 py-2 border">{{ $election->title }}</td>
-                    <td class="px-4 py-2 border">{{ $election->start_date }}</td>
-                    <td class="px-4 py-2 border">{{ $election->end_date }}</td>
-                    <td class="px-4 py-2 border">
-                        {{ $election->is_published ? 'Published' : 'Not Published' }}
-                    </td>
-                    <td class="px-4 py-2 border">
-                        <a href="{{ route('election.results', ['electionId' => $election->id]) }}" class="text-blue-500">View Results</a>
-                        <a href="{{ url('/elections/' . $election->id . '/candidates') }}" class="ml-4 text-blue-500">View Candidates</a>
-                    </td>
-                </tr>
+            <tr>
+                <td class="px-4 py-2 border">{{ $election->title }}</td>
+                <td class="px-4 py-2 border">{{ $election->start_date }}</td>
+                <td class="px-4 py-2 border">{{ $election->end_date }}</td>
+                <td class="px-4 py-2 border">
+                    {{ $election->is_published ? 'Published' : 'Not Published' }}
+                </td>
+                <td class="px-4 py-2 border">
+                    <a href="{{ route('voter.election.results', ['electionId' => $election->id]) }}"
+                        class="text-blue-500">View Results</a>
+                    <a href="{{ route('voter.elections.candidates', ['electionId' => $election->id]) }}"
+                        class="ml-4 text-blue-500">View Candidates</a>
+                </td>
+            </tr>
             @endforeach
         </tbody>
     </table>
