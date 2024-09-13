@@ -8,6 +8,8 @@
 
     <title>{{ config('app.name', 'VotingApp') }}</title>
 
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -16,9 +18,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans bg-gray-100 dark:bg-gray-900 min-h-screen flex justify-center items-center">
+<body class="flex items-center justify-center min-h-screen font-sans bg-gray-100 dark:bg-gray-900">
 
-    <div class="max-w-2xl mx-auto mt-10 bg-gradient-to-r from-purple-600 via-indigo-500 to-purple-800 p-8 rounded-lg shadow-lg">
+    <div class="max-w-2xl p-8 mx-auto mt-10 rounded-lg shadow-lg bg-gradient-to-r from-purple-600 via-indigo-500 to-purple-800">
         {{ $slot }}
     </div>
 

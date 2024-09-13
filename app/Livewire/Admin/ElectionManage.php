@@ -4,15 +4,13 @@ namespace App\Livewire\Admin;
 
 use App\Models\Election;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
 
 class ElectionManage extends Component
 {
-
     public $elections, $title, $start_date, $end_date, $is_published, $electionId;
     public $updateMode = false;
+    public $isModalOpen = false;
 
-    #[Layout('components.layouts.admin')]
     public function render()
     {
         $this->elections = Election::all();
@@ -25,6 +23,24 @@ class ElectionManage extends Component
         $this->start_date = '';
         $this->end_date = '';
         $this->is_published = false;
+    }
+
+    public function openModal()
+    {
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+        $this->resetInputFields();
+    }
+
+    public function create()
+    {
+        $this->resetInputFields();
+        $this->updateMode = false;
+        $this->openModal();
     }
 
     public function store()
@@ -43,7 +59,8 @@ class ElectionManage extends Component
         ]);
 
         session()->flash('message', 'Election Created Successfully.');
-        $this->resetInputFields();
+
+        $this->closeModal();
     }
 
     public function edit($id)
@@ -55,6 +72,8 @@ class ElectionManage extends Component
         $this->end_date = $election->end_date;
         $this->is_published = $election->is_published;
         $this->updateMode = true;
+
+        $this->openModal();
     }
 
     public function update()
@@ -73,9 +92,9 @@ class ElectionManage extends Component
             'is_published' => $this->is_published,
         ]);
 
-        $this->updateMode = false;
         session()->flash('message', 'Election Updated Successfully.');
-        $this->resetInputFields();
+
+        $this->closeModal();
     }
 
     public function delete($id)
@@ -95,10 +114,4 @@ class ElectionManage extends Component
             session()->flash('error', 'Results cannot be published before the election ends.');
         }
     }
-
-
 }
-
-
-
-
