@@ -49,30 +49,30 @@
                     </table>
 
                     <!-- Button to open modal -->
-                    <button @click="isModalOpen = true" class="px-4 py-2 mt-4 text-white bg-blue-500">Create Election</button>
+                    <button wire:click="create" class="px-4 py-2 mt-4 text-white bg-blue-500">Create Election</button>
 
                     <!-- Modal for create/edit -->
-                    <div x-data="{ isModalOpen: @entangle('isModalOpen') }">
-                        <div x-show="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    @if($isModalOpen)
+                        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                             <div class="w-full max-w-lg p-6 bg-white rounded shadow-lg">
                                 <h2 class="mb-4 text-xl font-semibold">{{ $updateMode ? 'Edit Election' : 'Create Election' }}</h2>
 
                                 <form wire:submit.prevent="{{ $updateMode ? 'update' : 'store' }}">
                                     <div class="mb-4">
                                         <label for="title" class="block mb-2 text-sm font-bold">Title</label>
-                                        <input type="text" wire:model="title" id="title" class="w-full p-2 border">
+                                        <input type="text" wire:model="title" id="title" class="w-full p-2 border rounded">
                                         @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="mb-4">
                                         <label for="start_date" class="block mb-2 text-sm font-bold">Start Date</label>
-                                        <input type="date" wire:model="start_date" id="start_date" class="w-full p-2 border">
+                                        <input type="date" wire:model="start_date" id="start_date" class="w-full p-2 border rounded">
                                         @error('start_date') <span class="text-red-500">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="mb-4">
                                         <label for="end_date" class="block mb-2 text-sm font-bold">End Date</label>
-                                        <input type="date" wire:model="end_date" id="end_date" class="w-full p-2 border">
+                                        <input type="date" wire:model="end_date" id="end_date" class="w-full p-2 border rounded">
                                         @error('end_date') <span class="text-red-500">{{ $message }}</span> @enderror
                                     </div>
 
@@ -82,13 +82,13 @@
                                     </div>
 
                                     <div class="flex justify-end space-x-2">
-                                        <button type="button" @click="isModalOpen = false" class="px-4 py-2 text-white bg-gray-500">Cancel</button>
+                                        <button type="button" wire:click="closeModal" class="px-4 py-2 text-white bg-gray-500">Cancel</button>
                                         <button type="submit" class="px-4 py-2 text-white bg-blue-500">{{ $updateMode ? 'Update' : 'Create' }}</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    @endif
                     <!-- End Modal -->
                 </div>
             </div>

@@ -29,11 +29,11 @@ new #[Layout('layouts.guest')] class extends Component
         $role = auth()->user()->role;
 
         if ($role === 'admin') {
-            $this->redirect(route('admin.dashboard'), navigate: true);
+            return to_route('admin.dashboard');
         } elseif ($role === 'voter') {
-            $this->redirect(route('voter.voterdashboard'), navigate: true);
+            return to_route('voter.voterdashboard');
         } else {
-            $this->redirect('/', navigate: true);
+            return to_route('/');
         }
     }
 }; ?>
